@@ -26,15 +26,22 @@ function onDragStart(e) {
 function onDragEnd() {
   endDrag()
 }
+
+// 点击卡片本身 = 开始编辑（拖拽结束后浏览器不会触发 click，二者不冲突）
+function onCardClick() {
+  emit('edit', props.task)
+}
 </script>
 
 <template>
   <div
     draggable="true"
-    class="card-brutal group cursor-grab active:cursor-grabbing select-none
+    class="card-brutal cursor-pointer active:cursor-grabbing select-none
            hover:rotate-[-1deg] hover:shadow-brutal-lg transition-all duration-150
            relative overflow-hidden animate-fade-in"
     :class="isDragging ? 'opacity-40 rotate-2 scale-95' : ''"
+    title="点击编辑任务，拖拽移动状态"
+    @click="onCardClick"
     @dragstart="onDragStart"
     @dragend="onDragEnd"
   >
@@ -44,51 +51,50 @@ function onDragEnd() {
       :class="priority.color"
     />
 
-    <div class="pl-3">
-      <!-- 头部：优先级标签 + 时间 -->
-      <div class="flex items-center justify-between gap-2 mb-1.5">
+    <div class="pl-3 flex gap-3">
+      <!-- 左侧：主内容（优先级 + 标题 + 描述） -->
+      <div class="flex-1 min-w-0">
         <span
-          class="text-xs font-bold px-1.5 py-0.5 border border-black"
+          class="inline-block text-xs font-bold px-1.5 py-0.5 border border-black"
           :class="[priority.color, priority.textColor]"
         >
           {{ priority.label }}
         </span>
-        <span class="text-xs text-stone-400 dark:text-stone-500 font-bold">
-          {{ formatDate(task.createdAt) }}
-        </span>
+
+        <h3 class="text-lg font-bold text-brutal-heading mt-1.5 mb-1 break-words">
+          {{ task.title }}
+        </h3>
+
+        <p
+          v-if="task.description"
+          class="text-sm text-stone-500 dark:text-stone-400 line-clamp-2 break-words"
+        >
+          {{ task.description }}
+        </p>
       </div>
 
-      <!-- 标题 -->
-      <h3 class="text-lg font-bold text-brutal-heading mb-1 break-words">
-        {{ task.title }}
-      </h3>
+      <!-- 右侧：日期 + 操作按钮（按钮位于日期下方） -->
+      <div class="flex flex-col items-end gap-1.5 shrink-0">
+        <span class="text-xs text-stone-400 dark:text-stone-500 font-bold whitespace-nowrap">
+          {{ formatDate(task.createdAt) }}
+        </span>
 
-      <!-- 描述（截断） -->
-      <p
-        v-if="task.description"
-        class="text-sm text-stone-500 dark:text-stone-400 line-clamp-2 break-words"
-      >
-        {{ task.description }}
-      </p>
-
-      <!-- 操作按钮 -->
-      <div
-        class="flex items-center gap-1.5 mt-2 opacity-0 group-hover:opacity-100 transition-opacity"
-      >
-        <button
-          class="btn-brutal btn-brutal-sm !px-2 !py-0.5 text-xs"
-          @click.stop="emit('edit', task)"
-          title="编辑"
-        >
-          ✏️
-        </button>
-        <button
-          class="btn-brutal-danger btn-brutal-sm !px-2 !py-0.5 text-xs"
-          @click.stop="emit('delete', task.id)"
-          title="删除"
-        >
-          🗑️
-        </button>
+        <div class="flex items-center gap-1.5">
+          <button
+            class="btn-brutal btn-brutal-sm !px-2 !py-0.5 text-xs"
+            @click.stop="emit('edit', task)"
+            title="编辑"
+          >
+            ✏️
+          </button>
+          <button
+            class="btn-brutal-danger btn-brutal-sm !px-2 !py-0.5 text-xs"
+            @click.stop="emit('delete', task.id)"
+            title="删除"
+          >
+            🗑️
+          </button>
+        </div>
       </div>
     </div>
   </div>

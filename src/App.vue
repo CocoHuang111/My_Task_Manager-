@@ -4,6 +4,7 @@ import { Toaster, toast } from 'vue-sonner'
 import Header from './components/Header.vue'
 import KanbanBoard from './components/KanbanBoard.vue'
 import TaskForm from './components/TaskForm.vue'
+import ConfirmDialog from './components/ConfirmDialog.vue'
 import { useTasks } from './composables/useTasks'
 import { useDarkMode } from './composables/useDarkMode'
 
@@ -75,9 +76,23 @@ function handleSave(formData) {
   closeForm()
 }
 
-function handleDelete(id) {
-  deleteTask(id)
+// === 删除确认 ===
+// 先弹窗确认，确认后才真正删除
+const pendingDelete = ref(null)
+
+function requestDelete(id) {
+  pendingDelete.value = tasks.value.find(t => t.id === id) || null
+}
+
+function confirmDelete() {
+  if (!pendingDelete.value) return
+  deleteTask(pendingDelete.value.id)
   toast.success('任务已删除 🗑️')
+  pendingDelete.value = null
+}
+
+function cancelDelete() {
+  pendingDelete.value = null
 }
 
 function handleMove(id, newStatus) {
@@ -109,7 +124,7 @@ function handleMove(id, newStatus) {
         :tasks="visibleTasks"
         :search-active="isSearchActive"
         @edit="openEditForm"
-        @delete="handleDelete"
+        @delete="requestDelete"
         @move="handleMove"
       />
     </main>
@@ -124,6 +139,17 @@ function handleMove(id, newStatus) {
       :task="editingTask"
       @save="handleSave"
       @close="closeForm"
+    />
+
+    <!-- 删除确认弹窗 -->
+    <ConfirmDialog
+      v-if="pendingDelete"
+      title="🗑️ 删除任务"
+      :message="`确定要删除「${pendingDelete.title}」吗？删除后无法恢复。`"
+      confirm-text="删除"
+      cancel-text="取消"
+      @confirm="confirmDelete"
+      @cancel="cancelDelete"
     />
   </div>
 </template>
