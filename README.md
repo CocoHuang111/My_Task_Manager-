@@ -1,9 +1,5 @@
 # Task_Management
 软件工程课堂作业实践1
-**日期：**2026年9月22日
-**学号：**2400017801
-**姓名：**黄珂凡
-**工具与模型选择**：AiWorkCN DeepSeek-V4-Flash&GLM-5.3
 
 ## 一、功能概述与运行截图
 见/screenshots/demos.md
