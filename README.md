@@ -1,10 +1,20 @@
 # Task_Management
 软件工程课堂作业实践1
 
+## 启动方式
+本地网页应用，技术栈为 Vue 3 + Vite + Tailwind CSS，任务数据保存在浏览器 localStorage 中。
+
+```bash
+npm install
+npm run dev
+```
+
+终端会给出本地地址，默认是 http://localhost:5173 ，用浏览器打开即可。
+
 ## 一、功能概述与运行截图
-见/screenshots/demos.md
+[功能运行截图](./screenshots/demos.md)
 ## 二、提示词设计
-见/prompts.md
+[提示词设计](./prompts.md)
 ## 三、个人反思
 我看到PPT里写着“项目分解与多步开发”：
 - 确认项目骨架，整体结构以及目录结构
