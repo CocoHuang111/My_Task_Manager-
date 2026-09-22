@@ -6,9 +6,9 @@
 **工具与模型选择**：AiWorkCN DeepSeek-V4-Flash&GLM-5.3
 
 ## 一、功能概述与运行截图
-
+见screenshots/demos.md
 ## 二、提示词设计
-
+见/prompts.md
 ## 三、个人反思
 我看到PPT里写着“项目分解与多步开发”：
 - 确认项目骨架，整体结构以及目录结构
