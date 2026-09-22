@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-sans bg-stone-100 text-gray-900 dark:bg-stone-900 dark:text-stone-100 transition-colors duration-300;
+    font-family: 'Ma Shan Zheng', cursive, system-ui, sans-serif;
+  }
+
+  /* 手绘风格全局微调 */
+  * {
+    @apply border-black dark:border-stone-300;
+  }
+
+  /* 滚动条风格统一 */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-stone-300 dark:bg-stone-600 rounded-full;
+  }
+}
+
+@layer components {
+  /* 新粗野主义按钮 */
+  .btn-brutal {
+    @apply px-4 py-2 font-bold border-2 border-black 
+           shadow-brutal hover:shadow-brutal-hover 
+           active:translate-x-[2px] active:translate-y-[2px] active:shadow-none
+           transition-all duration-100 
+           bg-white hover:bg-stone-50
+           dark:bg-stone-800 dark:hover:bg-stone-700 dark:border-stone-300
+           dark:shadow-[4px_4px_0px_#fff] dark:hover:shadow-[6px_6px_0px_#fff];
+  }
+
+  .btn-brutal-primary {
+    @apply btn-brutal bg-amber-300 hover:bg-amber-400 
+           dark:bg-amber-600 dark:hover:bg-amber-500;
+  }
+
+  .btn-brutal-danger {
+    @apply btn-brutal bg-red-400 hover:bg-red-500 text-white
+           dark:bg-red-700 dark:hover:bg-red-600;
+  }
+
+  .btn-brutal-sm {
+    @apply px-3 py-1 text-sm;
+  }
+
+  /* 卡片粗野主义容器 */
+  .card-brutal {
+    @apply border-2 border-black bg-white p-4 
+           shadow-brutal transition-all duration-100
+           dark:bg-stone-800 dark:border-stone-300
+           dark:shadow-[4px_4px_0px_#fff];
+  }
+
+  /* 列容器 */
+  .column-brutal {
+    @apply border-2 border-black bg-stone-50 p-4 
+           shadow-brutal
+           dark:bg-stone-800 dark:border-stone-300
+           dark:shadow-[4px_4px_0px_#fff];
+  }
+
+  /* 输入框 */
+  .input-brutal {
+    @apply w-full border-2 border-black px-3 py-2 
+           bg-white shadow-brutal-sm 
+           focus:outline-none focus:shadow-brutal 
+           focus:-translate-y-[1px] transition-all
+           dark:bg-stone-800 dark:border-stone-300
+           dark:shadow-[3px_3px_0px_#fff]
+           dark:focus:shadow-[4px_4px_0px_#fff];
+  }
+
+  /* 选择器 */
+  .select-brutal {
+    @apply input-brutal appearance-none cursor-pointer;
+  }
+}
+
+@layer utilities {
+  .text-brutal-heading {
+    font-family: 'Ma Shan Zheng', cursive;
+    @apply tracking-wide;
+  }
+}
