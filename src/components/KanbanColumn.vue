@@ -6,6 +6,7 @@ import { useDragState } from '../composables/useDragState'
 const props = defineProps({
   status: { type: Object, required: true },
   tasks: { type: Array, required: true },
+  searchActive: { type: Boolean, default: false },
 })
 
 const emit = defineEmits(['edit', 'delete', 'move'])
@@ -113,19 +114,25 @@ function onDrop(e) {
       />
     </div>
 
-    <!-- 空状态提示：无虚线框，整列可拖入 -->
+    <!-- 空状态：搜索中显示无匹配结果；平时显示原提示，无虚线框，整列可拖入 -->
     <div
       v-if="tasks.length === 0"
       class="flex items-center justify-center py-8 text-stone-400 dark:text-stone-500
              font-bold text-lg select-none"
     >
       <div class="text-center">
-        <span class="text-3xl block mb-1">
-          {{ status.value === 'todo' ? '📭' : status.value === 'in-progress' ? '🔄' : '🎉' }}
-        </span>
-        <span v-if="status.value === 'todo'">拖拽任务到此处</span>
-        <span v-else-if="status.value === 'in-progress'">暂无进行中的任务</span>
-        <span v-else>暂无已完成的任务</span>
+        <template v-if="searchActive">
+          <span class="text-3xl block mb-1">🔍</span>
+          <span>无匹配结果</span>
+        </template>
+        <template v-else>
+          <span class="text-3xl block mb-1">
+            {{ status.value === 'todo' ? '📭' : status.value === 'in-progress' ? '🔄' : '🎉' }}
+          </span>
+          <span v-if="status.value === 'todo'">拖拽任务到此处</span>
+          <span v-else-if="status.value === 'in-progress'">暂无进行中的任务</span>
+          <span v-else>暂无已完成的任务</span>
+        </template>
       </div>
     </div>
 

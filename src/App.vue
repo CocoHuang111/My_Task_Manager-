@@ -22,6 +22,33 @@ const stats = computed(() => ({
   total: tasks.value.length,
 }))
 
+// === 搜索 ===
+// 已确认的搜索词；空字符串 = 未在搜索，显示全部
+const activeQuery = ref('')
+const isSearchActive = computed(() => activeQuery.value.trim() !== '')
+
+// 状态栏实际展示的任务：搜索时仅保留标题或描述命中的卡片
+const visibleTasks = computed(() => {
+  const q = activeQuery.value.trim().toLowerCase()
+  if (!q) return tasks.value
+  return tasks.value.filter(
+    t => t.title.toLowerCase().includes(q)
+      || (t.description || '').toLowerCase().includes(q),
+  )
+})
+
+function handleSearch(query) {
+  activeQuery.value = (query || '').trim()
+  if (activeQuery.value) {
+    toast.success(`找到 ${visibleTasks.value.length} 个匹配任务 🔍`)
+  }
+}
+
+function handleResetSearch() {
+  activeQuery.value = ''
+  toast('已返回，显示全部任务 ↩')
+}
+
 function openAddForm() {
   editingTask.value = null
   showForm.value = true
@@ -70,13 +97,17 @@ function handleMove(id, newStatus) {
     <Header
       :is-dark="isDark"
       :stats="stats"
+      :search-active="isSearchActive"
       @toggle-dark="toggleDark"
       @add-task="openAddForm"
+      @search="handleSearch"
+      @reset-search="handleResetSearch"
     />
 
     <main class="flex-1 p-4 md:p-6 lg:p-8 max-w-7xl mx-auto w-full">
       <KanbanBoard
-        :tasks="tasks"
+        :tasks="visibleTasks"
+        :search-active="isSearchActive"
         @edit="openEditForm"
         @delete="handleDelete"
         @move="handleMove"
