@@ -1,5 +1,7 @@
 <script setup>
+import { computed } from 'vue'
 import { PRIORITY_CONFIG, formatDate } from '../utils/helpers'
+import { useDragState } from '../composables/useDragState'
 
 const props = defineProps({
   task: { type: Object, required: true },
@@ -7,14 +9,34 @@ const props = defineProps({
 
 const emit = defineEmits(['edit', 'delete'])
 
-const priority = PRIORITY_CONFIG[props.task.priority]
+const priority = computed(() => PRIORITY_CONFIG[props.task.priority] ?? PRIORITY_CONFIG.medium)
+
+const { draggingTaskId, startDrag, endDrag } = useDragState()
+
+// 当前卡片是否正在被拖拽（原位卡片半透明倾斜）
+const isDragging = computed(() => draggingTaskId.value === props.task.id)
+
+function onDragStart(e) {
+  // Firefox 必须调用 setData 才能触发拖拽
+  e.dataTransfer.effectAllowed = 'move'
+  e.dataTransfer.setData('text/plain', props.task.id)
+  startDrag(props.task.id)
+}
+
+function onDragEnd() {
+  endDrag()
+}
 </script>
 
 <template>
   <div
-    class="card-brutal group cursor-grab active:cursor-grabbing 
+    draggable="true"
+    class="card-brutal group cursor-grab active:cursor-grabbing select-none
            hover:rotate-[-1deg] hover:shadow-brutal-lg transition-all duration-150
            relative overflow-hidden animate-fade-in"
+    :class="isDragging ? 'opacity-40 rotate-2 scale-95' : ''"
+    @dragstart="onDragStart"
+    @dragend="onDragEnd"
   >
     <!-- 优先级色条 -->
     <div

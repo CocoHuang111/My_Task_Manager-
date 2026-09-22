@@ -71,14 +71,15 @@ export function useTasks() {
 
   /**
    * 移动任务到新状态（拖拽用）
+   * 卡片从原状态栏消失，追加到目标状态栏队列末尾（有序排列）
    */
   function moveTask(id, newStatus) {
     const task = tasks.value.find(t => t.id === id)
-    if (task && task.status !== newStatus) {
-      task.status = newStatus
-      task.updatedAt = new Date().toISOString()
-      tasks.value = [...tasks.value]
-    }
+    if (!task || task.status === newStatus) return
+    task.status = newStatus
+    task.updatedAt = new Date().toISOString()
+    const rest = tasks.value.filter(t => t.id !== id)
+    tasks.value = [...rest, task]
   }
 
   /**

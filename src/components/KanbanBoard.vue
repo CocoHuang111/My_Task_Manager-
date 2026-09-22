@@ -7,13 +7,10 @@ defineProps({
 })
 
 const emit = defineEmits(['edit', 'delete', 'move'])
-
-function onMove(evt) {
-  emit('move', evt.id, evt.status)
-}
 </script>
 
 <template>
+  <!-- 三列看板：唯一数据源是 props.tasks，各列纯渲染，无本地副本 -->
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
     <KanbanColumn
       v-for="col in STATUS_LIST"
@@ -22,7 +19,7 @@ function onMove(evt) {
       :tasks="tasks.filter(t => t.status === col.value)"
       @edit="(task) => emit('edit', task)"
       @delete="(id) => emit('delete', id)"
-      @move="onMove"
+      @move="(id, status) => emit('move', id, status)"
     />
   </div>
 </template>

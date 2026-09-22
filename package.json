@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "vue": "^3.4.0",
-    "vuedraggable": "^4.1.0",
     "vue-sonner": "^1.0.3"
   },
   "devDependencies": {
