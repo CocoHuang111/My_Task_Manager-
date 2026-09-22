@@ -1,9 +1,5 @@
 # Task_Management
 软件工程课堂作业实践1
-**日期：**2026年9月22日
-**学号：**2400017801
-**姓名：**黄珂凡
-**工具与模型选择**：AiWorkCN DeepSeek-V4-Flash&GLM-5.3
 
 ## 启动方式
 本地网页应用，技术栈为 Vue 3 + Vite + Tailwind CSS，任务数据保存在浏览器 localStorage 中。
